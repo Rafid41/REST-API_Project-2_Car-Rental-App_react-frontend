@@ -5,11 +5,13 @@ import { auth } from "../../redux/authActionCreators";
 import { connect } from "react-redux";
 import Spinner from "../Spinner/Spinner";
 import { Alert } from "reactstrap";
+import "./Auth.css";
 
 // eta authActionCreators e dispatch korbe
 const mapDispatchToProps = (dispatch) => {
     return {
-        auth: (email, password, mode) => dispatch(auth(email, password, mode)),
+        auth: (email, password, mode, accountType) =>
+            dispatch(auth(email, password, mode, accountType)),
     };
 };
 
@@ -49,13 +51,15 @@ class Auth extends Component {
                             email: "",
                             password: "",
                             passwordConfirm: "",
+                            accountType: "Client",
                         }
                     }
                     onSubmit={(values) => {
                         this.props.auth(
                             values.email,
                             values.password,
-                            this.state.mode
+                            this.state.mode,
+                            values.accountType
                         );
                     }}
                     //==================== validation ==================//
@@ -129,59 +133,85 @@ class Auth extends Component {
                             </button>
                             <br />
                             <br />
+
+                            {/*    ####################  form  ##################### */}
                             <form onSubmit={handleSubmit}>
-                                {/* field "name" will be same as initialValues field_names */}
-                                <input
-                                    name="email"
-                                    placeholder="Enter Your Email"
-                                    className="form-control"
-                                    value={values.email}
-                                    onChange={handleChange}
-                                />
-                                <span style={{ color: "red" }}>
-                                    {errors.email}
-                                </span>
+                                <div className="text-center">
+                                    {/* field "name" will be same as initialValues field_names */}
+                                    <label className="label_name">Email</label>
+                                    <input
+                                        name="email"
+                                        className="form-control"
+                                        value={values.email}
+                                        onChange={handleChange}
+                                    />
+                                    <span style={{ color: "red" }}>
+                                        {errors.email}
+                                    </span>
 
-                                <br />
+                                    <br />
+                                    <label className="label_name">
+                                        Password
+                                    </label>
+                                    <input
+                                        name="password"
+                                        className="form-control"
+                                        value={values.password}
+                                        onChange={handleChange}
+                                    />
+                                    <span style={{ color: "red" }}>
+                                        {errors.password}
+                                    </span>
 
-                                <input
-                                    name="password"
-                                    placeholder="Password"
-                                    className="form-control"
-                                    value={values.password}
-                                    onChange={handleChange}
-                                />
-                                <span style={{ color: "red" }}>
-                                    {errors.password}
-                                </span>
+                                    <br />
+                                    {/* mode=="Sign Up" hole ei part dekhabe, nahole kisuna(null) dekhabe */}
+                                    {this.state.mode === "Sign Up" ? (
+                                        <div>
+                                            <label className="label_name">
+                                                Confirm Password
+                                            </label>
+                                            <input
+                                                name="passwordConfirm"
+                                                className="form-control"
+                                                value={values.passwordConfirm}
+                                                onChange={handleChange}
+                                            />
+                                            <span style={{ color: "red" }}>
+                                                {errors.passwordConfirm}
+                                            </span>
+                                            <br />
+                                            <div>
+                                                <label className="label_name">
+                                                    Account Type
+                                                </label>
+                                                <select
+                                                    name="accountType"
+                                                    className="form-control"
+                                                    value={values.accountType}
+                                                    onChange={handleChange}
+                                                >
+                                                    <option value="Client">
+                                                        Client
+                                                    </option>
+                                                    <option value="Owner">
+                                                        Owner
+                                                    </option>
+                                                </select>
+                                            </div>
 
-                                <br />
-                                {/* mode=="Sign Up" hole ei part dekhabe, nahole kisuna(null) dekhabe */}
-                                {this.state.mode === "Sign Up" ? (
-                                    <div>
-                                        <input
-                                            name="passwordConfirm"
-                                            placeholder="Confirm Password"
-                                            className="form-control"
-                                            value={values.passwordConfirm}
-                                            onChange={handleChange}
-                                        />
-                                        <span style={{ color: "red" }}>
-                                            {errors.passwordConfirm}
-                                        </span>
+                                            <br />
+                                        </div>
+                                    ) : null}
 
-                                        <br />
-                                    </div>
-                                ) : null}
-
-                                <button
-                                    type="submit"
-                                    className="btn btn-success"
-                                >
-                                    {this.state.mode === "Sign Up"
-                                        ? "Sign Up"
-                                        : "Login"}
-                                </button>
+                                    <button
+                                        type="submit"
+                                        className="btn btn-success"
+                                    >
+                                        {this.state.mode === "Sign Up"
+                                            ? "Sign Up"
+                                            : "Login"}
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     )}

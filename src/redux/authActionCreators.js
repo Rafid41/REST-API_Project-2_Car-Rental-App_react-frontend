@@ -41,21 +41,33 @@ const saveTokenDataAndGetUserID = (access) => {
     return token.user_id;
 };
 
-export const auth = (email, password, mode) => (dispatch) => {
+export const auth = (email, password, mode, accountType) => (dispatch) => {
     dispatch(authLoading(true)); // true ta payLoad hisebe pass hbe
 
-    const authData = {
-        email: email,
-        password: password,
-    };
+    let authData = null;
 
     // connecting with django backend
     let authUrl = null;
     if (mode === "Sign Up") {
         authUrl = "http://localhost:8000/api/users/";
+
+        authData = {
+            // name will be same as django field name
+            email: email,
+            password: password,
+            account_type: accountType,
+        };
     } else {
         authUrl = "http://localhost:8000/api/token/";
+
+        authData = {
+            email: email,
+            password: password,
+        };
     }
+
+    console.log(authData);
+
 
     axios
         .post(authUrl, authData)
