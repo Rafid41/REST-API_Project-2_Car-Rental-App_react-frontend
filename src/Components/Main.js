@@ -1,7 +1,7 @@
 // src\Components\Main.js
 import React, { Component } from "react";
 import Header from "./Header/Header";
-import { Route, Routes, Redirect, Navigate } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 // import Orders from "./Orders/Orders";
 // import Checkout from "./Orders/Checkout/Checkout";
 import Auth from "./Auth/Auth";
@@ -22,7 +22,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 class Main extends Component {
-
     componentDidMount() {
         //  check j login token diye auto login korte parbe kina
         this.props.authCheck();
