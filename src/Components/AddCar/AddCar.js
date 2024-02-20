@@ -13,7 +13,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const AddCar = (props) => {
     const [carPhoto, setCarPhoto] = useState(null);
-    console.log(props.categories);
 
     return (
         <div className="container" style={{ textAlign: "center" }}>
@@ -39,9 +38,6 @@ const AddCar = (props) => {
                     car_category: "",
                 }}
                 onSubmit={(values) => {
-                    console.log(values);
-                    console.log(carPhoto);
-
                     // object which will passed to json
                     const newCar = {
                         car_name: values.car_name,

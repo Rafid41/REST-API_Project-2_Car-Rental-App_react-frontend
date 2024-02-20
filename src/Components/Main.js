@@ -46,7 +46,10 @@ class Main extends Component {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/logout" element={<Logout />} />
-                    <Route path="/car_list/:category" element={<CarList />} />
+                    <Route
+                        path="/car_list/:category/:category_index"
+                        element={<CarList />}
+                    />
                     {/* kono kisur sathe match na hole "/" */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>

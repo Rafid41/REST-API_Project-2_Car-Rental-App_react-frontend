@@ -18,7 +18,7 @@ const CarCategories = (props) => {
             <ListGroup>
                 {props.categories.map((category, index) => (
                     <Link
-                        to={`/car_list/${category}`}
+                        to={`/car_list/${category}/${index + 1}`}
                         key={index} //optional
                         style={{ textDecoration: "None" }}
                     >

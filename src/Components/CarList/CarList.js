@@ -2,6 +2,8 @@
 import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { connect } from "react-redux";
+import { ListGroup, ListGroupItem } from "reactstrap";
+import { Link } from "react-router-dom";
 
 const mapStateToProps = (state) => {
     return {
@@ -10,9 +12,9 @@ const mapStateToProps = (state) => {
 };
 
 const CarList = (props) => {
-    console.log(props.cars);
     const params = useParams();
-    const { category } = params;
+    const { category, category_index } = params;
+    const currentTime = new Date().getTime();
     return (
         <div>
             <h2
@@ -24,6 +26,37 @@ const CarList = (props) => {
             >
                 {category}
             </h2>
+
+            <ListGroup>
+                {props.cars.map((car, index) => {
+                    if (
+                        car.car_category === parseInt(category_index) &&
+                        (car.expire_time == null ||
+                            currentTime > car.expire_time)
+                    ) {
+                        return (
+                            <Link
+                                to={`/car_list/${category}`}
+                                key={index}
+                                style={{ textDecoration: "None" }}
+                            >
+                                <ListGroupItem action>
+                                    <p
+                                        style={{
+                                            fontSize: "20px",
+                                            padding: "5px",
+                                            fontWeight: "bold",
+                                        }}
+                                    >
+                                        {car.car_name}
+                                    </p>
+                                </ListGroupItem>
+                            </Link>
+                        );
+                    }
+                    return null;
+                })}
+            </ListGroup>
         </div>
     );
 };
