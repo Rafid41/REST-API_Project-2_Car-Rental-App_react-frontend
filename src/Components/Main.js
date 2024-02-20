@@ -2,8 +2,7 @@
 import React, { Component } from "react";
 import Header from "./Header/Header";
 import { Route, Routes, Navigate } from "react-router-dom";
-// import Orders from "./Orders/Orders";
-// import Checkout from "./Orders/Checkout/Checkout";
+import Home from "./Home";
 import Auth from "./Auth/Auth";
 import { connect } from "react-redux";
 import { authCheck } from "../redux/authActionCreators";
@@ -44,9 +43,7 @@ class Main extends Component {
         } else {
             routes = (
                 <Routes>
-                    {/* <Route path="/" element={<BurgerBuilder />} /> */}
-                    {/* <Route path="/orders" element={<Orders />} />
-                    <Route path="/checkout" element={<Checkout />} /> */}
+                    <Route path="/" element={<Home />} />
                     <Route path="/logout" element={<Logout />} />
                     {/* kono kisur sathe match na hole "/" */}
                     <Route path="*" element={<Navigate to="/" replace />} />

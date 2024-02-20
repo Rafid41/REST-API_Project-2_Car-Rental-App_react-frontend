@@ -31,14 +31,14 @@ const Header = (props) => {
             <Nav className="mr-md-5">
                 <NavItem>
                     <NavLink to="/" className="NavLink">
-                        Burger-Builder
+                        Home
                     </NavLink>
                 </NavItem>
-                <NavItem>
+                {/* <NavItem>
                     <NavLink to="/orders" className="NavLink">
                         Orders
                     </NavLink>
-                </NavItem>
+                </NavItem> */}
                 <NavItem>
                     <NavLink to="/logout" className="NavLink">
                         Logout
@@ -57,9 +57,9 @@ const Header = (props) => {
             >
                 {/* mr == margin-right, ml==margin-left, md=medium screen */}
                 {/* "Brand" className ta custom css file er class */}
-                <NavbarBrand href="/" className="mr-auto ml-md-5 Brand">
+                {/* <NavbarBrand href="/" className="mr-auto ml-md-5 Brand">
                     Home
-                </NavbarBrand>
+                </NavbarBrand> */}
                 {links}
             </Navbar>
         </div>

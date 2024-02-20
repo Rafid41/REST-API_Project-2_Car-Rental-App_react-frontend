@@ -46,12 +46,14 @@ const saveTokenDataAndGetUserID = (access, account_type) => {
 export const auth = (email, password, mode, accountType) => (dispatch) => {
     dispatch(authLoading(true)); // true ta payLoad hisebe pass hbe
 
+    // hosting URL
+    const hostUrl = "http://localhost:8000";
     let authData = null;
 
     // connecting with django backend
     let authUrl = null;
     if (mode === "Sign Up") {
-        authUrl = "http://localhost:8000/api/users/";
+        authUrl = `${hostUrl}/api/users/`;
 
         authData = {
             // name will be same as django field name
@@ -60,7 +62,7 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
             account_type: accountType,
         };
     } else {
-        authUrl = "http://localhost:8000/api/token/";
+        authUrl = `${hostUrl}/api/token/`;
 
         authData = {
             email: email,
@@ -68,7 +70,7 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
         };
     }
 
-    console.log(authData);
+    // console.log(authData);
 
     axios
         .post(authUrl, authData)
@@ -76,12 +78,12 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
             dispatch(authLoading(false));
 
             if (mode === "Login") {
-                console.log(response);
+                // console.log(response);
                 const access = response.data.access;
 
                 // get account_type
                 let account_type_login = null;
-                axios.get("http://localhost:8000/api/users/").then((res) => {
+                axios.get(`${hostUrl}/api/users/`).then((res) => {
                     for (let i in res.data) {
                         if (res.data[i].email === email) {
                             account_type_login = res.data[i].account_type;
@@ -100,7 +102,7 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
             } else {
                 // Sign up
                 return axios
-                    .post("http://localhost:8000/api/token/", authData)
+                    .post(`${hostUrl}/api/token/`, authData)
                     .then((response) => {
                         const access = response.data.access;
                         const user_id = saveTokenDataAndGetUserID(
