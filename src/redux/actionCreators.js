@@ -23,7 +23,7 @@ export const getCategories = () => (dispatch) => {
             dispatch(getCategoriesHelper(category_array));
         })
         .catch((err) => {
-            console.log("error fetching users");
+            console.log("error fetching categories");
         });
 };
 
@@ -50,4 +50,26 @@ export const AddNewCar = (newCar) => (dispatch) => {
         .catch((err) => {
             console.log(err);
         });
+};
+
+// ==================== getCarList ==========================//
+export const getCar = () => (dispatch) => {
+    axios
+        .get(`${hostUrl}/api/cars/`)
+        .then((res) => {
+            console.log(res.data);
+            dispatch(getCarHelper(res.data));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+export const getCarHelper = (cars) => {
+    return {
+        type: actionTypes.GET_CARS,
+        payload: {
+            cars: cars,
+        },
+    };
 };

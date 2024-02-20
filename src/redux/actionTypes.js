@@ -1,6 +1,7 @@
 // src\redux\actionTypes.js
 
 export const GET_CATEGORIES = "GET_CATEGORIES";
+export const GET_CARS = "GET_CARS";
 
 // for authentication
 export const AUTH_SUCCESS = "AUTH_SUCCESS";

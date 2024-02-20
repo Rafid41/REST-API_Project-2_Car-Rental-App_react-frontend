@@ -12,10 +12,18 @@ const INITIAL_STATE = {
     account_type: null,
     user_email: null,
     categories: [],
+    cars: [],
 };
 
 export const reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        // get cars
+        case actionTypes.GET_CARS:
+            return {
+                ...state,
+                cars: action.payload.cars,
+            };
+
         //get Categories
         case actionTypes.GET_CATEGORIES:
             return {

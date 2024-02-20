@@ -3,7 +3,8 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import AddCar from "./AddCar/AddCar";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
-import { getCategories } from "../redux/actionCreators";
+import { getCategories, getCar } from "../redux/actionCreators";
+import CarCategories from "./CarCategories/CarCategories";
 
 const mapStateToProps = (state) => {
     return {
@@ -16,6 +17,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: () => dispatch(getCategories()),
+        getCar: () => dispatch(getCar()),
     };
 };
 
@@ -25,15 +27,17 @@ const Home = (props) => {
 
     useEffect(() => {
         props.getCategories();
+        props.getCar();
     }, []);
 
     const toggleModal = () => {
         setModalOpen(!modalOpen);
+        // refresh car list
+        props.getCar();
     };
 
     return (
         <div>
-            <p>{props.categories}</p>
             <Modal isOpen={modalOpen}>
                 <ModalBody>
                     <AddCar
@@ -49,6 +53,7 @@ const Home = (props) => {
                     </button>
                 </ModalFooter>
             </Modal>
+            <CarCategories categories={props.categories} />
 
             {props.account_type === "Owner" && (
                 <button

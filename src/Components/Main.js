@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import Header from "./Header/Header";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./Home";
+import CarList from "./CarList/CarList";
 import Auth from "./Auth/Auth";
 import { connect } from "react-redux";
 import { authCheck } from "../redux/authActionCreators";
@@ -45,6 +46,7 @@ class Main extends Component {
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/logout" element={<Logout />} />
+                    <Route path="/car_list/:category" element={<CarList />} />
                     {/* kono kisur sathe match na hole "/" */}
                     <Route path="*" element={<Navigate to="/" replace />} />
                 </Routes>
