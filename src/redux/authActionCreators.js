@@ -3,35 +3,7 @@ import * as actionTypes from "./actionTypes";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 
-//  eta dispatch hbe jokhn kono response ashbe firebase theke, means login/signUp hole
-//  nicher auth fn theke dis[atch hye kehane ashbe, erpor reducer.js e jabe]
-export const authSuccess = (token, userId, account_type) => {
-    return {
-        type: actionTypes.AUTH_SUCCESS,
-        payload: {
-            token: token,
-            userId: userId,
-            account_type: account_type,
-        },
-    };
-};
-
-export const authLoading = (isLoading) => {
-    return {
-        type: actionTypes.AUTH_LOADING,
-        payload: isLoading,
-    };
-};
-
-// Firbase authentication Failed
-export const authFailed = (errMsg) => {
-    return {
-        type: actionTypes.AUTH_FAILED,
-        payload: errMsg,
-    };
-};
-
-const saveTokenDataAndGetUserID = (access, account_type) => {
+const saveTokenDataAndGetUserID = (access, account_type, email) => {
     // decoding token
     const token = jwtDecode(access);
     localStorage.setItem("token", access);
@@ -39,10 +11,12 @@ const saveTokenDataAndGetUserID = (access, account_type) => {
     const expirationTime = new Date(token.exp * 1000);
     localStorage.setItem("expirationTime", expirationTime);
     localStorage.setItem("account_type", account_type);
+    localStorage.setItem("email", email);
 
     return token.user_id;
 };
 
+// ==================== Main Authentication =================//
 export const auth = (email, password, mode, accountType) => (dispatch) => {
     dispatch(authLoading(true)); // true ta payLoad hisebe pass hbe
 
@@ -70,8 +44,6 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
         };
     }
 
-    // console.log(authData);
-
     axios
         .post(authUrl, authData)
         .then((response) => {
@@ -90,10 +62,11 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
 
                             const user_id = saveTokenDataAndGetUserID(
                                 access,
-                                account_type_login
+                                account_type_login,
+                                email
                             );
                             dispatch(
-                                authSuccess(access, user_id, account_type_login)
+                                authHelper(access, user_id, account_type_login)
                             );
                             break;
                         }
@@ -107,9 +80,10 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
                         const access = response.data.access;
                         const user_id = saveTokenDataAndGetUserID(
                             access,
-                            accountType
+                            accountType,
+                            email
                         );
-                        dispatch(authSuccess(access, user_id, accountType));
+                        dispatch(authHelper(access, user_id, accountType));
                     });
             }
         })
@@ -127,6 +101,8 @@ export const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("expirationTime");
     localStorage.removeItem("userId");
+    localStorage.removeItem("email");
+    localStorage.removeItem("account_type");
 
     return {
         type: actionTypes.AUTH_LOGOUT,
@@ -151,7 +127,37 @@ export const authCheck = () => (dispatch) => {
         } else {
             const userId = localStorage.getItem("userId");
             const account_type = localStorage.getItem("account_type");
-            dispatch(authSuccess(token, userId, account_type));
+            dispatch(authHelper(token, userId, account_type));
         }
     }
+};
+
+// ========================= helper functions ===========================//
+//  eta dispatch hbe jokhn kono response ashbe firebase theke, means login/signUp hole
+//  nicher auth fn theke dis[atch hye kehane ashbe, erpor reducer.js e jabe]
+export const authHelper = (token, userId, account_type) => {
+    return {
+        type: actionTypes.AUTH_SUCCESS,
+        payload: {
+            token: token,
+            userId: userId,
+            account_type: account_type,
+            email: localStorage.getItem("email"),
+        },
+    };
+};
+
+export const authLoading = (isLoading) => {
+    return {
+        type: actionTypes.AUTH_LOADING,
+        payload: isLoading,
+    };
+};
+
+// Firbase authentication Failed
+export const authFailed = (errMsg) => {
+    return {
+        type: actionTypes.AUTH_FAILED,
+        payload: errMsg,
+    };
 };

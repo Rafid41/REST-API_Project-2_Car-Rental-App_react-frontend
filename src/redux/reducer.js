@@ -10,10 +10,19 @@ const INITIAL_STATE = {
     // for auth error
     authFailedMsg: null,
     account_type: null,
+    user_email: null,
+    categories: [],
 };
 
 export const reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        //get Categories
+        case actionTypes.GET_CATEGORIES:
+            return {
+                ...state,
+                categories: action.payload.category_array,
+            };
+
         // AUTH cases:
         case actionTypes.AUTH_SUCCESS:
             return {
@@ -21,6 +30,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
                 token: action.payload.token,
                 userId: action.payload.userId,
                 account_type: action.payload.account_type,
+                user_email: action.payload.email,
             };
 
         //logout
