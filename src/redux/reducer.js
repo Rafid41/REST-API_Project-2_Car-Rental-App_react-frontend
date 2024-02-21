@@ -28,7 +28,7 @@ export const reducer = (state = INITIAL_STATE, action) => {
         case actionTypes.GET_CATEGORIES:
             return {
                 ...state,
-                categories: action.payload.category_array,
+                categories: action.payload.category,
             };
 
         // AUTH cases:

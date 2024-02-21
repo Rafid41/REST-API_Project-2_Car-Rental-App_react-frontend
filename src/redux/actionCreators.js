@@ -1,7 +1,6 @@
 // src\redux\actionCreators.js
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
 
 // hostURL for backend
 const hostUrl = "http://localhost:8000";
@@ -13,25 +12,18 @@ export const getCategories = () => (dispatch) => {
     axios
         .get(`${hostUrl}/api/categories/`)
         .then((res) => {
-            // console.log(res.data);
-            let category_array = [];
-
-            for (let key in res.data) {
-                category_array.push(res.data[key].category_name);
-            }
-
-            dispatch(getCategoriesHelper(category_array));
+            dispatch(getCategoriesHelper(res.data));
         })
         .catch((err) => {
             console.log("error fetching categories");
         });
 };
 
-export const getCategoriesHelper = (category_array) => {
+export const getCategoriesHelper = (category) => {
     return {
         type: actionTypes.GET_CATEGORIES,
         payload: {
-            category_array: category_array,
+            category: category,
         },
     };
 };
@@ -45,7 +37,7 @@ export const AddNewCar = (newCar) => (dispatch) => {
             },
         })
         .then((res) => {
-            alert("Added car successfully");
+            alert("Car Rented successfully");
         })
         .catch((err) => {
             console.log(err);

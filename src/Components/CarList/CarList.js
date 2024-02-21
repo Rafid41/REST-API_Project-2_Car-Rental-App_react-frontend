@@ -13,8 +13,9 @@ const mapStateToProps = (state) => {
 
 const CarList = (props) => {
     const params = useParams();
-    const { category, category_index } = params;
-    // console.log(category, category_index);
+    const { categoryString } = params;
+    const category = JSON.parse(decodeURIComponent(categoryString));
+    console.log(category);
     const currentTime = new Date().getTime();
     return (
         <div>
@@ -25,13 +26,13 @@ const CarList = (props) => {
                     marginBottom: "15px",
                 }}
             >
-                {category}
+                Availabe {category.category_name}(s)
             </h2>
 
             <ListGroup>
                 {props.cars.map((car, index) => {
                     if (
-                        car.car_category === parseInt(category_index) &&
+                        car.car_category === category.id &&
                         (car.expire_time == null ||
                             currentTime > car.expire_time)
                     ) {
@@ -41,7 +42,7 @@ const CarList = (props) => {
                         );
                         return (
                             <Link
-                                to={`/car_detail/${carString}/${category}`}
+                                to={`/car_detail/${carString}/${categoryString}`}
                                 key={index}
                                 style={{ textDecoration: "None" }}
                             >

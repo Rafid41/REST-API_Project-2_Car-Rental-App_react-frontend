@@ -13,6 +13,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const AddCar = (props) => {
     const [carPhoto, setCarPhoto] = useState(null);
+    console.log(props.categories);
 
     return (
         <div className="container" style={{ textAlign: "center" }}>
@@ -132,8 +133,8 @@ const AddCar = (props) => {
                             >
                                 <option value="">Select Category</option>
                                 {props.categories.map((category, index) => (
-                                    <option key={category} value={index + 1}>
-                                        {category}
+                                    <option key={category} value={category.id}>
+                                        {category.category_name}
                                     </option>
                                 ))}
                             </Field>

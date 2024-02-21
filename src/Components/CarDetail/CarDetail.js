@@ -13,7 +13,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const CarDetail = (props) => {
     const params = useParams();
-    const { carString, category } = params;
+    const { carString, categoryString } = params;
     const [showform, setShowform] = useState(false);
     const [inputValues, setInputValues] = useState(null);
     const [openFormButtonValue, setOpenFormButtonValue] = useState(true);
@@ -25,6 +25,7 @@ const CarDetail = (props) => {
 
     // get the object from carString
     const car = JSON.parse(decodeURIComponent(carString));
+    const category = JSON.parse(decodeURIComponent(categoryString));
 
     const submitButton = () => {
         if (inputValues == null) {
@@ -127,7 +128,9 @@ const CarDetail = (props) => {
                         }}
                     >
                         <span className="carDetail_label">Vehicle Type: </span>
-                        <span className="carDetail_info">{category}</span>
+                        <span className="carDetail_info">
+                            {category.category_name}
+                        </span>
                     </p>
                     <p
                         style={{

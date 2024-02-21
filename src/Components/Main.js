@@ -48,11 +48,11 @@ class Main extends Component {
                     <Route path="/" element={<Home />} />
                     <Route path="/logout" element={<Logout />} />
                     <Route
-                        path="/car_list/:category/:category_index"
+                        path="/car_list/:categoryString"
                         element={<CarList />}
                     />
                     <Route
-                        path="/car_detail/:carString/:category"
+                        path="/car_detail/:carString/:categoryString"
                         element={<CarDetail />}
                     />
                     {/* kono kisur sathe match na hole "/" */}

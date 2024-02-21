@@ -16,25 +16,32 @@ const CarCategories = (props) => {
                 Car Categories
             </h2>
             <ListGroup>
-                {props.categories.map((category, index) => (
-                    <Link
-                        to={`/car_list/${category}/${index + 1}`}
-                        key={index} //optional
-                        style={{ textDecoration: "None" }}
-                    >
-                        <ListGroupItem key={index} action>
-                            <p
-                                style={{
-                                    fontSize: "20px",
-                                    padding: "5px",
-                                    fontWeight: "bold",
-                                }}
-                            >
-                                {category}
-                            </p>
-                        </ListGroupItem>
-                    </Link>
-                ))}
+                {props.categories.map((category, index) => {
+                    // <p>{category.category_name}</p>
+                    // convert object to string so that it can be passed by Link
+                    const categoryString = encodeURIComponent(
+                        JSON.stringify(category)
+                    );
+                    return (
+                        <Link
+                            to={`/car_list/${categoryString}`}
+                            key={index} //optional
+                            style={{ textDecoration: "None" }}
+                        >
+                            <ListGroupItem key={index} action>
+                                <p
+                                    style={{
+                                        fontSize: "20px",
+                                        padding: "5px",
+                                        fontWeight: "bold",
+                                    }}
+                                >
+                                    {category.category_name}
+                                </p>
+                            </ListGroupItem>
+                        </Link>
+                    );
+                })}
             </ListGroup>
         </div>
     );
