@@ -37,7 +37,7 @@ export const AddNewCar = (newCar) => (dispatch) => {
             },
         })
         .then((res) => {
-            alert("Car Rented successfully");
+            alert("Car Added successfully");
         })
         .catch((err) => {
             console.log(err);
@@ -78,7 +78,12 @@ export const updateRent = (updated_car, car_id) => (dispatch) => {
             },
         })
         .then((res) => {
-            alert("Updated car successfully");
+            alert("Car Rented successfully");
+
+            // refresh to homepage
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
         })
         .catch((err) => {
             console.log(err);
