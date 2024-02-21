@@ -57,7 +57,6 @@ export const getCar = () => (dispatch) => {
     axios
         .get(`${hostUrl}/api/cars/`)
         .then((res) => {
-            console.log(res.data);
             dispatch(getCarHelper(res.data));
         })
         .catch((err) => {
@@ -72,4 +71,24 @@ export const getCarHelper = (cars) => {
             cars: cars,
         },
     };
+};
+
+// ================= update car/ Renting =====================//
+export const updateRent = (updated_car, car_id) => (dispatch) => {
+    // needed id to update
+    // put for replace
+    // patch for some field update
+    // ekahne changed field gula update kora hoise , all field na
+    axios
+        .patch(`${hostUrl}/api/cars/${car_id}/`, updated_car, {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        })
+        .then((res) => {
+            alert("Updated car successfully");
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 };

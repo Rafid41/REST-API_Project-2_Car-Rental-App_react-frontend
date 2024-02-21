@@ -8,6 +8,7 @@ import Auth from "./Auth/Auth";
 import { connect } from "react-redux";
 import { authCheck } from "../redux/authActionCreators";
 import Logout from "./Auth/Logout";
+import CarDetail from "./CarDetail/CarDetail";
 
 const mapStateToProps = (state) => {
     return {
@@ -49,6 +50,10 @@ class Main extends Component {
                     <Route
                         path="/car_list/:category/:category_index"
                         element={<CarList />}
+                    />
+                    <Route
+                        path="/car_detail/:carString/:category"
+                        element={<CarDetail />}
                     />
                     {/* kono kisur sathe match na hole "/" */}
                     <Route path="*" element={<Navigate to="/" replace />} />

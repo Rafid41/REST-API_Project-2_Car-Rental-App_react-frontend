@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
 const CarList = (props) => {
     const params = useParams();
     const { category, category_index } = params;
+    // console.log(category, category_index);
     const currentTime = new Date().getTime();
     return (
         <div>
@@ -34,9 +35,13 @@ const CarList = (props) => {
                         (car.expire_time == null ||
                             currentTime > car.expire_time)
                     ) {
+                        // Serialize the car object into a string, cz objects can't be sent directly
+                        const carString = encodeURIComponent(
+                            JSON.stringify(car)
+                        );
                         return (
                             <Link
-                                to={`/car_list/${category}`}
+                                to={`/car_detail/${carString}/${category}`}
                                 key={index}
                                 style={{ textDecoration: "None" }}
                             >
