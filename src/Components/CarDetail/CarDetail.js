@@ -1,13 +1,20 @@
 // car_rental_app_react_frontend\src\Components\CarDetail\CarDetail.js
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { updateRent } from "../../redux/actionCreators";
+import { updateRent, getCar } from "../../redux/actionCreators";
 import { connect } from "react-redux";
 import "../../App.css";
 
+const mapStateToProps = (state) => {
+    return {
+        account_type: state.account_type,
+        cars: state.cars,
+    };
+};
 const mapDispatchToProps = (dispatch) => {
     return {
         updateRent: (RentCar, car_id) => dispatch(updateRent(RentCar, car_id)),
+        getCar: () => dispatch(getCar()),
     };
 };
 
@@ -27,9 +34,50 @@ const CarDetail = (props) => {
     const car = JSON.parse(decodeURIComponent(carString));
     const category = JSON.parse(decodeURIComponent(categoryString));
 
+    // ============== get latest book time of user =================//
+    const checkUserLastBookTime = () => {
+        const userId = Number(localStorage.getItem("userId"));
+
+        // find all cars where the condition matches
+        const filteredCars = props.cars.filter((car) => car.booker === userId);
+
+        // no cars booked
+        if (filteredCars.length === 0) {
+            return false;
+        }
+
+        const LastBookTimeCar = filteredCars.reduce((prevCar, currentCar) => {
+            return prevCar.booked_time > currentCar.booked_time
+                ? prevCar
+                : currentCar;
+        });
+
+        // get book date
+        let date = new Date(LastBookTimeCar.booked_time);
+        let day = date.getDate();
+        let month = date.getMonth() + 1; // Month is zero-based, so adding 1 to get the correct month
+        let year = date.getFullYear(); // Getting last two digits of the year
+
+        // Format day, month, and year as dd/mm/yy
+        const find_book_date = `${day}/${month}/${year}`;
+
+        // find current date
+        date = new Date();
+        day = date.getDate();
+        month = date.getMonth() + 1; // Month is zero-based, so adding 1 to get the correct month
+        year = date.getFullYear(); // Getting last two digits of the year
+        const currentDate = `${day}/${month}/${year}`;
+
+        if (find_book_date == currentDate) return true;
+        return false;
+    };
+
+    // ======================= submit btn =======================//
     const submitButton = () => {
         if (inputValues == null) {
             alert("Please input the number of days");
+        } else if (checkUserLastBookTime()) {
+            alert("You have already booked a car today, try again tomorrow");
         } else {
             let currentTime = new Date().getTime();
 
@@ -41,9 +89,11 @@ const CarDetail = (props) => {
                 booker: Number(localStorage.getItem("userId")),
             };
             props.updateRent(RentCar, car.id);
+            props.getCar();
         }
     };
 
+    // ============================= input Area =======================//
     const inputArea = (
         <div
             style={{
@@ -145,7 +195,9 @@ const CarDetail = (props) => {
                     </p>
                     <br />
                     <br />
-                    {openFormButtonValue && OpenFormButton}
+                    {openFormButtonValue &&
+                        props.account_type == "Client" &&
+                        OpenFormButton}
                     <br />
                     {showform && inputArea}
                 </div>
@@ -156,4 +208,4 @@ const CarDetail = (props) => {
     );
 };
 
-export default connect(null, mapDispatchToProps)(CarDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(CarDetail);

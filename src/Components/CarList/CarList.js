@@ -15,7 +15,7 @@ const CarList = (props) => {
     const params = useParams();
     const { categoryString } = params;
     const category = JSON.parse(decodeURIComponent(categoryString));
-    console.log(category);
+
     const currentTime = new Date().getTime();
     return (
         <div>
