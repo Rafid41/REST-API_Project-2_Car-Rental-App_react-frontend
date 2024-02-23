@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
     return {
         // firebase login/signup token for auto login
         token: state.token,
+        account_type: state.account_type,
     };
 };
 
@@ -28,23 +29,35 @@ const Header = (props) => {
         );
     } else {
         links = (
-            <Nav className="mr-md-5">
-                <NavItem>
-                    <NavLink to="/" className="NavLink">
-                        Home
-                    </NavLink>
-                </NavItem>
-                {/* <NavItem>
-                    <NavLink to="/orders" className="NavLink">
-                        Orders
-                    </NavLink>
-                </NavItem> */}
-                <NavItem>
-                    <NavLink to="/logout" className="NavLink">
-                        Logout
-                    </NavLink>
-                </NavItem>
-            </Nav>
+            <div className="d-flex justify-content-between align-items-center w-100">
+                <Nav className="mr-md-5">
+                    <NavItem>
+                        <NavLink to="/" className="NavLink">
+                            Home
+                        </NavLink>
+                    </NavItem>
+
+                    <NavItem>
+                        <NavLink to="/logout" className="NavLink">
+                            Logout
+                        </NavLink>
+                    </NavItem>
+                </Nav>
+
+                <Nav className="ml-auto">
+                    <NavItem>
+                        <p
+                            style={{
+                                margin: "6px",
+                                color: "white",
+                                fontSize: "20px",
+                            }}
+                        >
+                            @{props.account_type} account
+                        </p>
+                    </NavItem>
+                </Nav>
+            </div>
         );
     }
     return (
@@ -60,6 +73,7 @@ const Header = (props) => {
                 {/* <NavbarBrand href="/" className="mr-auto ml-md-5 Brand">
                     Home
                 </NavbarBrand> */}
+
                 {links}
             </Navbar>
         </div>

@@ -5,12 +5,14 @@ import AddCar from "./AddCar/AddCar";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
 import { getCategories, getCar } from "../redux/actionCreators";
 import CarCategories from "./CarCategories/CarCategories";
+import OwnersCar from "./OwnersCar/OwnersCar";
 
 const mapStateToProps = (state) => {
     return {
         account_type: state.account_type,
         user_email: state.user_email,
         categories: state.categories,
+        cars: state.cars,
     };
 };
 
@@ -53,17 +55,25 @@ const Home = (props) => {
                     </button>
                 </ModalFooter>
             </Modal>
-            <CarCategories categories={props.categories} />
+            {props.account_type === "Client" && (
+                <CarCategories categories={props.categories} />
+            )}
 
             {props.account_type === "Owner" && (
-                <button
-                    className="addNewButton"
-                    active
-                    color="info"
-                    onClick={toggleModal}
-                >
-                    Add New Car
-                </button>
+                <div>
+                    <OwnersCar
+                        cars={props.cars}
+                        categories={props.categories}
+                    />
+                    <button
+                        className="addNewButton"
+                        active
+                        color="info"
+                        onClick={toggleModal}
+                    >
+                        Add New Car
+                    </button>
+                </div>
             )}
         </div>
     );
