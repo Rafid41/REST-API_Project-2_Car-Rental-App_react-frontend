@@ -21,8 +21,8 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
     dispatch(authLoading(true)); // true ta payLoad hisebe pass hbe
 
     // hosting URL/ localhost
-    // const hostUrl = "http://localhost:8000";
-    const hostUrl = "Rafid8205.pythonanywhere.com";
+    const hostUrl = "http://localhost:8000";
+    // const hostUrl = "https://Rafid8205.pythonanywhere.com"; //adding https or http is important
 
     let authData = null;
 
