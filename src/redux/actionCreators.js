@@ -2,8 +2,9 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
 
-// hostURL for backend
-const hostUrl = "http://localhost:8000";
+// hostURL for backend //localhost
+// const hostUrl = "http://localhost:8000";
+const hostUrl = "Rafid8205.pythonanywhere.com";
 
 // ====================get Categories =================//
 export const getCategories = () => (dispatch) => {
