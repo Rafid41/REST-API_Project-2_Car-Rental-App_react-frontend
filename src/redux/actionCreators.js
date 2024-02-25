@@ -124,3 +124,20 @@ export const getCarBookingDatesHelper = (bookingDates) => {
         },
     };
 };
+
+// ===================== post book info ====================//
+export const postCarBookInfo = (info) => (dispatch) => {
+    dispatch(LoadingScreen(true));
+    axios
+        .post(`${hostUrl}/api/car_booking_dates/`, info)
+        .then((res) => {
+            // update book list
+            dispatch(getCarBookingDates());
+            dispatch(LoadingScreen(false));
+            alert("Car Booked successfully");
+        })
+        .catch((err) => {
+            dispatch(LoadingScreen(false));
+            console.log(err);
+        });
+};

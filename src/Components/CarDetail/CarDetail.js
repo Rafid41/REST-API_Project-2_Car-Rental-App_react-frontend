@@ -1,12 +1,15 @@
 // car_rental_app_react_frontend\src\Components\CarDetail\CarDetail.js
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getCar } from "../../redux/actionCreators";
+import {
+    getCarBookingDates,
+    postCarBookInfo,
+} from "../../redux/actionCreators";
 import { connect } from "react-redux";
 import "../../App.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import AlertMessage from "../AlertMessage/AlertMessage";
+import { Spinner } from "reactstrap";
 
 // ======================== redux ======================//
 const mapStateToProps = (state) => {
@@ -14,12 +17,14 @@ const mapStateToProps = (state) => {
         account_type: state.account_type,
         cars: state.cars,
         booking_date_details: state.booking_date_details,
+        authLoading: state.authLoading,
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
         // updateRent: (RentCar, car_id) => dispatch(updateRent(RentCar, car_id)),
-        getCar: () => dispatch(getCar()),
+        getCarBookingDates: () => dispatch(getCarBookingDates()),
+        postCarBookInfo: (info) => dispatch(postCarBookInfo(info)),
     };
 };
 
@@ -52,39 +57,56 @@ const CarDetail = (props) => {
     // ======================= submit btn =======================//
     const submitButton = () => {
         if (selectedDate == null) {
+            alert("Please select a date");
         } else if (checkDateAndCar()) {
             alert("This date is already booked, select another one");
         } else {
-            console.log("haha");
+            const bookInfo = {
+                booking_date: selectedDate,
+                car_id: car.id,
+                booker_id: localStorage.getItem("userId"),
+            };
+            props.postCarBookInfo(bookInfo);
         }
     };
 
     // ============================= input Area =======================//
-    const inputArea = (
-        <div
-            style={{
-                border: "3px solid aqua",
-                padding: "2rem",
-                borderRadius: "10px",
-                textAlign: "center",
-            }}
-        >
-            <DatePicker
-                className="form-control"
-                selected={selectedDate ? new Date(selectedDate) : null}
-                onChange={(date) =>
-                    setSelectedDate(date.toLocaleDateString("en-BD"))
-                }
-                dateFormat="dd/MM/yyyy" // Customize date format as needed
-                placeholderText="Select a date"
-            />
-            <br />
-            <br />
-            <button className="btn btn-success" onClick={submitButton}>
-                Confirm
-            </button>
-        </div>
-    );
+    let inputArea = null;
+    if (props.authLoading) {
+        inputArea = (
+            <div>
+                <center>
+                    <Spinner />
+                </center>
+            </div>
+        );
+    } else {
+        inputArea = (
+            <div
+                style={{
+                    border: "3px solid aqua",
+                    padding: "2rem",
+                    borderRadius: "10px",
+                    textAlign: "center",
+                }}
+            >
+                <DatePicker
+                    className="form-control"
+                    selected={selectedDate ? new Date(selectedDate) : null}
+                    onChange={(date) =>
+                        setSelectedDate(date.toLocaleDateString("en-BD"))
+                    }
+                    dateFormat="dd/MM/yyyy" // Customize date format as needed
+                    placeholderText="Select a date"
+                />
+                <br />
+                <br />
+                <button className="btn btn-success" onClick={submitButton}>
+                    Confirm
+                </button>
+            </div>
+        );
+    }
 
     const OpenFormButton = (
         <button className="btn btn-info form-control" onClick={openForm}>
