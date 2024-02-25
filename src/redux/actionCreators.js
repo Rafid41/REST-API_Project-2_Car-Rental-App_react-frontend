@@ -90,3 +90,25 @@ export const updateRent = (updated_car, car_id) => (dispatch) => {
             console.log(err);
         });
 };
+
+// ===================== get CarBookingDates ===================//
+export const getCarBookingDates = () => (dispatch) => {
+    axios
+        .get(`${hostUrl}/api/car_booking_dates/`)
+        .then((res) => {
+            dispatch(getCarBookingDatesHelper(res.data));
+            console.log(res.data);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+};
+
+export const getCarBookingDatesHelper = (bookingDates) => {
+    return {
+        type: actionTypes.GET_CAR_BOOKING_DATES,
+        payload: {
+            bookingDates: bookingDates,
+        },
+    };
+};

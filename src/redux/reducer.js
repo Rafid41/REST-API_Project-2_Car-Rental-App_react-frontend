@@ -13,10 +13,17 @@ const INITIAL_STATE = {
     user_email: null,
     categories: [],
     cars: [],
+    booking_date_details: [],
 };
 
 export const reducer = (state = INITIAL_STATE, action) => {
     switch (action.type) {
+        // get booking dates and details
+        case actionTypes.GET_CAR_BOOKING_DATES:
+            return {
+                ...state,
+                booking_date_details: action.payload.bookingDates,
+            };
         // get cars
         case actionTypes.GET_CARS:
             return {

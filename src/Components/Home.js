@@ -3,7 +3,11 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import AddCar from "./AddCar/AddCar";
 import { Modal, ModalBody, ModalFooter } from "reactstrap";
-import { getCategories, getCar } from "../redux/actionCreators";
+import {
+    getCategories,
+    getCar,
+    getCarBookingDates,
+} from "../redux/actionCreators";
 import CarCategories from "./CarCategories/CarCategories";
 import OwnersCar from "./OwnersCar/OwnersCar";
 
@@ -20,6 +24,7 @@ const mapDispatchToProps = (dispatch) => {
     return {
         getCategories: () => dispatch(getCategories()),
         getCar: () => dispatch(getCar()),
+        getCarBookingDates: () => dispatch(getCarBookingDates()),
     };
 };
 
@@ -30,6 +35,7 @@ const Home = (props) => {
     useEffect(() => {
         props.getCategories();
         props.getCar();
+        props.getCarBookingDates();
     }, []);
 
     const toggleModal = () => {

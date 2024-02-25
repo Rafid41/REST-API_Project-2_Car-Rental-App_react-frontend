@@ -2,6 +2,7 @@
 
 export const GET_CATEGORIES = "GET_CATEGORIES";
 export const GET_CARS = "GET_CARS";
+export const GET_CAR_BOOKING_DATES = "GET_CAR_BOOKING_DATES";
 
 // for authentication
 export const AUTH_SUCCESS = "AUTH_SUCCESS";

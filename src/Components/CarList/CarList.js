@@ -31,11 +31,7 @@ const CarList = (props) => {
 
             <ListGroup>
                 {props.cars.map((car, index) => {
-                    if (
-                        car.car_category === category.id &&
-                        (car.expire_time == null ||
-                            currentTime > car.expire_time)
-                    ) {
+                    if (car.car_category === category.id) {
                         // Serialize the car object into a string, cz objects can't be sent directly
                         const carString = encodeURIComponent(
                             JSON.stringify(car)
