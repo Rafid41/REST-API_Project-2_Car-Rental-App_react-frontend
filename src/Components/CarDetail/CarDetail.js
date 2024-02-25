@@ -1,29 +1,35 @@
 // car_rental_app_react_frontend\src\Components\CarDetail\CarDetail.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { updateRent, getCar } from "../../redux/actionCreators";
+import { getCar } from "../../redux/actionCreators";
 import { connect } from "react-redux";
 import "../../App.css";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import AlertMessage from "../AlertMessage/AlertMessage";
 
+// ======================== redux ======================//
 const mapStateToProps = (state) => {
     return {
         account_type: state.account_type,
         cars: state.cars,
+        booking_date_details: state.booking_date_details,
     };
 };
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateRent: (RentCar, car_id) => dispatch(updateRent(RentCar, car_id)),
+        // updateRent: (RentCar, car_id) => dispatch(updateRent(RentCar, car_id)),
         getCar: () => dispatch(getCar()),
     };
 };
 
+//========================= main fn =============================//
 const CarDetail = (props) => {
     const params = useParams();
     const { carString, categoryString } = params;
     const [showform, setShowform] = useState(false);
-    const [inputValues, setInputValues] = useState(null);
     const [openFormButtonValue, setOpenFormButtonValue] = useState(true);
+    const [selectedDate, setSelectedDate] = useState(null);
 
     const openForm = () => {
         setShowform(true);
@@ -34,62 +40,22 @@ const CarDetail = (props) => {
     const car = JSON.parse(decodeURIComponent(carString));
     const category = JSON.parse(decodeURIComponent(categoryString));
 
-    // ============== get latest book time of user =================//
-    const checkUserLastBookTime = () => {
-        const userId = Number(localStorage.getItem("userId"));
-
-        // find all cars where the condition matches
-        const filteredCars = props.cars.filter((car) => car.booker === userId);
-
-        // no cars booked
-        if (filteredCars.length === 0) {
-            return false;
-        }
-
-        const LastBookTimeCar = filteredCars.reduce((prevCar, currentCar) => {
-            return prevCar.booked_time > currentCar.booked_time
-                ? prevCar
-                : currentCar;
-        });
-
-        // get book date
-        let date = new Date(LastBookTimeCar.booked_time);
-        let day = date.getDate();
-        let month = date.getMonth() + 1; // Month is zero-based, so adding 1 to get the correct month
-        let year = date.getFullYear(); // Getting last two digits of the year
-
-        // Format day, month, and year as dd/mm/yy
-        const find_book_date = `${day}/${month}/${year}`;
-
-        // find current date
-        date = new Date();
-        day = date.getDate();
-        month = date.getMonth() + 1; // Month is zero-based, so adding 1 to get the correct month
-        year = date.getFullYear(); // Getting last two digits of the year
-        const currentDate = `${day}/${month}/${year}`;
-
-        if (find_book_date == currentDate) return true;
-        return false;
+    // ============== check if the date and car_id existed or not =================//
+    const checkDateAndCar = () => {
+        const findCar = props.booking_date_details.find(
+            (detail) =>
+                detail.car_id === car.id && detail.booking_date === selectedDate
+        );
+        return findCar ? true : false;
     };
 
     // ======================= submit btn =======================//
     const submitButton = () => {
-        if (inputValues == null) {
-            alert("Please input the number of days");
-        } else if (checkUserLastBookTime()) {
-            alert("You have already booked a car today, try again tomorrow");
+        if (selectedDate == null) {
+        } else if (checkDateAndCar()) {
+            alert("This date is already booked, select another one");
         } else {
-            let currentTime = new Date().getTime();
-
-            // uppdate korbo only modified field gula, jegula unchanged segula na
-            // 'patch' use kora hbe, not 'put'
-            const RentCar = {
-                booked_time: currentTime,
-                expire_time: currentTime + inputValues * 24 * 60 * 60 * 1000,
-                booker: Number(localStorage.getItem("userId")),
-            };
-            props.updateRent(RentCar, car.id);
-            props.getCar();
+            console.log("haha");
         }
     };
 
@@ -103,15 +69,16 @@ const CarDetail = (props) => {
                 textAlign: "center",
             }}
         >
-            <input
-                type="number"
+            <DatePicker
                 className="form-control"
-                placeholder="For How Many days?"
-                value={inputValues}
-                onChange={(event) => {
-                    setInputValues(event.target.value);
-                }}
+                selected={selectedDate ? new Date(selectedDate) : null}
+                onChange={(date) =>
+                    setSelectedDate(date.toLocaleDateString("en-BD"))
+                }
+                dateFormat="dd/MM/yyyy" // Customize date format as needed
+                placeholderText="Select a date"
             />
+            <br />
             <br />
             <button className="btn btn-success" onClick={submitButton}>
                 Confirm

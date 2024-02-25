@@ -2,30 +2,34 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { AddNewCar } from "../../redux/actionCreators";
+import Spinner from "../Spinner/Spinner";
 import "../../App.css";
 import { connect } from "react-redux";
 
+// ======================== redux ======================//
+const mapStateToProps = (state) => {
+    return {
+        authLoading: state.authLoading,
+    };
+};
 const mapDispatchToProps = (dispatch) => {
     return {
         AddNewCar: (newCar) => dispatch(AddNewCar(newCar)),
     };
 };
 
+// ===================== main fn ======================//
+
 const AddCar = (props) => {
     const [carPhoto, setCarPhoto] = useState(null);
     console.log(props.categories);
 
-    return (
-        <div className="container" style={{ textAlign: "center" }}>
-            <h2
-                style={{
-                    fontWeight: "bold",
-                    color: "#a109ed",
-                }}
-            >
-                Add New Car
-            </h2>
-            <br />
+    let formikForm = null;
+
+    if (props.authLoading) {
+        formikForm = <Spinner />;
+    } else {
+        formikForm = (
             <Formik
                 initialValues={{
                     car_name: "",
@@ -140,8 +144,23 @@ const AddCar = (props) => {
                     </Form>
                 )}
             </Formik>
+        );
+    }
+
+    return (
+        <div className="container" style={{ textAlign: "center" }}>
+            <h2
+                style={{
+                    fontWeight: "bold",
+                    color: "#a109ed",
+                }}
+            >
+                Add New Car
+            </h2>
+            <br />
+            {formikForm}
         </div>
     );
 };
 
-export default connect(null, mapDispatchToProps)(AddCar);
+export default connect(mapStateToProps, mapDispatchToProps)(AddCar);

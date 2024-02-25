@@ -70,6 +70,7 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
                             dispatch(
                                 authHelper(access, user_id, account_type_login)
                             );
+                            dispatch(authLoading(false));
                             break;
                         }
                     }
@@ -86,6 +87,7 @@ export const auth = (email, password, mode, accountType) => (dispatch) => {
                             email
                         );
                         dispatch(authHelper(access, user_id, accountType));
+                        dispatch(authLoading(false));
                     });
             }
         })
