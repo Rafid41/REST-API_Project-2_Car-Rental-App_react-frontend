@@ -26,7 +26,7 @@ const Search = (props) => {
             );
             setSearchResults(filteredCars);
         } else {
-            setSearchResults([]); // Set search results to an empty array when the search query is empty
+            setSearchResults([]);
         }
     };
 
@@ -54,7 +54,7 @@ const Search = (props) => {
 
                 {/* Display search results */}
                 <ListGroup>
-                    {searchResults.length > 0 && // Check if searchResults is not empty before rendering
+                    {searchResults.length > 0 && // Check if searchResults is not empty
                         searchResults.map((car, index) => {
                             const category = props.categories.find(
                                 (category) => category.id === car.car_category
