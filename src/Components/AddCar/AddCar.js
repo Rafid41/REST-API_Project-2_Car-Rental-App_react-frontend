@@ -30,12 +30,9 @@ const AddCar = (props) => {
                 initialValues={{
                     car_name: "",
                     car_number: "",
-                    booked_time: "",
-                    expire_time: "",
                     price_per_day: "",
                     car_photo: "",
                     owner: "",
-                    booker: "",
                     car_category: "",
                 }}
                 onSubmit={(values) => {
@@ -43,12 +40,9 @@ const AddCar = (props) => {
                     const newCar = {
                         car_name: values.car_name,
                         car_number: values.car_number,
-                        booked_time: null,
-                        expire_time: null,
                         price_per_day: values.price_per_day,
                         car_photo: carPhoto,
                         owner: localStorage.getItem("userId"),
-                        booker: null,
                         car_category: values.car_category,
                     };
 
